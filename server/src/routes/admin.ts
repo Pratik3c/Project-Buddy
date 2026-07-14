@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { Types } from "mongoose";
 import { z } from "zod";
 import { User } from "../models/User.js";
 import { Appointment } from "../models/Appointment.js";
@@ -62,7 +63,7 @@ router.patch("/appointments/:id/status", async (req, res, next) => {
     const appt = await Appointment.findByIdAndUpdate(req.params.id, { status }, { new: true }).populate("student", "name email");
     if (appt?.student) {
       const stu = appt.student as { name?: string; email?: string };
-      await Notification.create({ student: (appt.student as { _id: string })._id, title: `Appointment ${status}`, message: `Your appointment "${appt.title}" is now ${status}.` });
+      await Notification.create({ student: (appt.student as { _id: Types.ObjectId })._id, title: `Appointment ${status}`, message: `Your appointment "${appt.title}" is now ${status}.` });
       if (stu.email) await sendMail({ to: stu.email, subject: `Your appointment is now ${status}`, html: `<p>Hi ${stu.name},</p><p>Your appointment <b>${appt.title}</b> is now <b>${status}</b>.</p>` }).catch(() => {});
     }
     res.json({ appointment: appt });
@@ -78,7 +79,7 @@ router.patch("/appointments/:id/schedule", async (req, res, next) => {
     }).parse(req.body);
     const appt = await Appointment.findByIdAndUpdate(req.params.id, { ...data, status: "approved" }, { new: true }).populate("student", "name email");
     if (appt?.student) {
-      const stu = appt.student as { _id: string; name?: string; email?: string };
+      const stu = appt.student as { _id: Types.ObjectId; name?: string; email?: string };
       await Notification.create({ student: stu._id, title: "Meeting scheduled", message: `Meeting for "${appt.title}" on ${data.meetingDate} at ${data.meetingTime}.` });
       if (stu.email) {
         const t = meetingScheduledTemplate({ studentName: stu.name ?? "Student", date: data.meetingDate, time: data.meetingTime, link: data.meetingLink, notes: data.meetingNotes });
@@ -110,7 +111,7 @@ router.patch("/payments/:id/status", async (req, res, next) => {
     const { status } = z.object({ status: z.enum(["pending", "verified", "rejected"]) }).parse(req.body);
     const payment = await Payment.findByIdAndUpdate(req.params.id, { status, verifiedBy: req.user!.id }, { new: true }).populate("student", "name email");
     if (payment?.student) {
-      const stu = payment.student as { _id: string; email?: string };
+      const stu = payment.student as { _id: Types.ObjectId; email?: string };
       await Notification.create({ student: stu._id, title: `Payment ${status}`, message: `Your payment of ₹${payment.amount} is now ${status}.` });
       if (stu.email) await sendMail({ to: stu.email, subject: `Payment ${status}`, html: `<p>Your payment of ₹${payment.amount} is now <b>${status}</b>.</p>` }).catch(() => {});
     }
