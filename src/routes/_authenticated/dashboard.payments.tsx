@@ -50,7 +50,7 @@ function PaymentsPage() {
     }
   }
 
-  const qrSrc = "public/QR.png";
+  const qrSrc = "/QR.png";
 
   return (
     <DashboardShell>
