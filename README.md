@@ -2,11 +2,9 @@
 
 **Your Academic Project Partner** — a premium full-stack platform where college students can request project mentoring, assignment help, documentation, PPTs, viva prep and more.
 
-- **Frontend**: React 19 + TypeScript + Tailwind v4 + TanStack Router (Lovable preview)
+- **Frontend**: React 19 + TypeScript + Tailwind v4 + TanStack Router
 - **Backend**: Node.js + Express + TypeScript + Mongoose (in `/server`)
 - **Database**: MongoDB (bring your own connection string)
-
-> The Lovable preview runs the frontend. To get the full app working end-to-end you run the Express backend locally and point `VITE_API_URL` at it.
 
 ---
 
@@ -182,11 +180,3 @@ All under `/api`.
 | `401 Unauthorized` on `/api/auth/me` | Token expired — log out and back in |
 | `MongoServerError: bad auth` | Wrong password in `MONGODB_URI` |
 | Screenshots don't load in admin | The frontend derives URLs from `VITE_API_URL`. Make sure it points to the same host that serves `/uploads` |
-
----
-
-## Notes on the Lovable preview
-
-The Lovable preview only runs the frontend. API calls will fail with a friendly error until you run `/server` locally. Once the backend is running and reachable, the full app works end-to-end.
-
-Enjoy — and go ship those projects! 🚀
