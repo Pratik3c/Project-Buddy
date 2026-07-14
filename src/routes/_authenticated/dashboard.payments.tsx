@@ -27,7 +27,7 @@ const badge: Record<Payment["status"], string> = {
 
 function PaymentsPage() {
   const qc = useQueryClient();
-  const { data: qr } = useQuery({ queryKey: ["qr"], queryFn: () => api<{ qr: QR }>("/settings/qr") });
+  // const { data: qr } = useQuery({ queryKey: ["qr"], queryFn: () => api<{ qr: QR }>("/settings/qr") });
   const { data, isLoading } = useQuery({
     queryKey: ["me", "payments"],
     queryFn: () => api<{ payments: Payment[] }>("/payments/mine"),
@@ -50,7 +50,7 @@ function PaymentsPage() {
     }
   }
 
-  const qrSrc = qr?.qr?.image ? (qr.qr.image.startsWith("http") ? qr.qr.image : `${API_BASE.replace("/api", "")}${qr.qr.image}`) : null;
+  const qrSrc = "public/QR.png";
 
   return (
     <DashboardShell>
@@ -70,7 +70,7 @@ function PaymentsPage() {
                 <QrCode className="h-8 w-8" />
               </div>
             )}
-            <p className="mt-3 text-xs text-muted-foreground">Ask admin to update the QR from admin settings.</p>
+            <p className="mt-3 text-xs text-muted-foreground">Scan this QR code to make your payment.</p>
           </Card>
 
           <Card className="border-border/60 p-6">
