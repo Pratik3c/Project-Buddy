@@ -22,7 +22,7 @@ function ServicesPage() {
         <div className="mt-12 grid gap-6 md:grid-cols-2">
           <PricingCard
             title="Assignment / Mini Projects"
-            price="₹499"
+            price="₹99 to ₹999"
             suitableFor={["Weekly submissions", "Mini Projects", "Lab Assignments", "Small College Tasks"]}
             includes={["Source Code", "Explanation", "Documentation (if required)", "Setup Guide", "Basic Support"]}
           />
